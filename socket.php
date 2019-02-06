@@ -1,5 +1,4 @@
-<?php
-
+<?php   
         class TCP_Client {
 
             function __construct($ip, $port, $mensaje) {
@@ -29,14 +28,29 @@
             }
 
         }
-        if(isset($_POST['ip'])&&isset($_POST['port'])&&isset($_POST['mensaje'])){
+        if(isset($_POST['ip'])&&isset($_POST['port'])&&isset($_POST['nombreApellido'])){
            $ip = $_POST['ip'];
            $p = $_POST['port'];
-           $m = $_POST['mensaje'];
-           $obj_client = new TCP_Client($ip,$p,$m); 
+           $nombreApellido = $_POST['nombreApellido'];
+           $empresaCargo = $_POST['empresaCargo'];
+           $telefono = $_POST['telefono'];
+           $mail = $_POST['mail'];
+           
+           $zpl = '^XA'.
+                  '^CFA,45'.
+                  '^FO50,25^FD'.$nombreApellido.'^FS'.
+                  '^CFA,30'. 
+                  '^FO50,80^FD'.$empresaCargo.'^FS'.
+                  '^FO50,120^FD'.$telefono.'^FS'.
+                  '^FO50,160^FD'.$mail.'^FS'.
+                  '^FO50,110^BY2,2,95^BQ,2,4'.
+                  '^FDHM,A'.$nombreApellido.'/'.$empresaCargo.'/'.$telefono.'/'.$mail.'^FS'.
+                  '^XZ';
+
+           $obj_client = new TCP_Client($ip,$p,$zpl); 
            echo '-mensaje entregado';
         }else{
-            echo '-mensaje no entregado';
+            echo '-mensaje no entregado: '.$zpl;
         }
 
         
